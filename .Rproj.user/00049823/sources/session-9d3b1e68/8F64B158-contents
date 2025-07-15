@@ -1,0 +1,27 @@
+library(tidyverse)
+
+
+# Q: What is the overral trend of age_standardised NCD prevalences?
+noncom_std_prev <- noncom |>
+  filter(str_detect(tolower(indicator_name), "std") & 
+           str_detect(tolower(indicator_name), "preval")) |> 
+  arrange(year)
+
+plot_data <- noncom_std_prev |>
+  select(year, indicator_name, dimension_name, indicator_value_) |>
+  rename(sex = dimension_name) |>
+  filter(sex == "Male" | sex == "Female") |> 
+  arrange(year)
+
+write.csv(plot_data, "plotting_data/overral_preval_years.csv")
+write.csv(noncom_std_prev, "noncomstdprev.csv")
+
+dumb <- noncom_std_prev |> 
+  filter(dimension_name == "Male" | dimension_name == "Female") |>
+  rename(sex = dimension_name) |> 
+  select(indicator_name, sex, indicator_value_)
+
+
+
+
+
